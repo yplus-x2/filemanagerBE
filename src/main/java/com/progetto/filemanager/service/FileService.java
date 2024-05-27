@@ -49,6 +49,7 @@ public class FileService {
         blobEntity.setContent(file.getBytes());
         fileEntity.setBlob(blobEntity);
         fileEntity.setUuid(UUID.randomUUID().toString());
+        fileEntity.setContentType(file.getContentType());
         fileEntity.setName(file.getOriginalFilename());
 
         LocalDateTime now = LocalDateTime.now();

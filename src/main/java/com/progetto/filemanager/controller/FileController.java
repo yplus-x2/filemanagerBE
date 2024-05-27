@@ -6,6 +6,7 @@ import com.progetto.filemanager.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,6 +50,7 @@ public class FileController {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentDispositionFormData("attachment", fileEntity.getName());
             headers.setContentLength(blobEntity.getContent().length);
+            headers.setContentType(MediaType.parseMediaType(fileEntity.getContentType()));
 
             return new ResponseEntity<>(blobEntity.getContent(), headers, HttpStatus.OK);
         } else {

@@ -26,6 +26,9 @@ public class FileEntity implements Serializable {
     @Column(name = "uuid")
     private String uuid;
 
+    @Column(name = "type")
+    private String contentType;
+
     @Column(name = "name")
     private String name;
 

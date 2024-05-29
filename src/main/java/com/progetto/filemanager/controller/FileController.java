@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/file")
-@CrossOrigin(origins="http://localhost:4200")
+@CrossOrigin(origins = "*", exposedHeaders = "Content-Disposition")
 
 public class FileController {
 
@@ -45,10 +45,12 @@ public class FileController {
 
         if (fileEntityOptional.isPresent()) {
             FileEntity fileEntity = fileEntityOptional.get();
+            System.out.println("@@@@ NOME DEL FILE: " + fileEntity.getName());
             BlobEntity blobEntity = fileEntity.getBlob();
 
             HttpHeaders headers = new HttpHeaders();
-            headers.setContentDispositionFormData("attachment", fileEntity.getName());
+            String filename = fileEntity.getName();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
             headers.setContentLength(blobEntity.getContent().length);
             headers.setContentType(MediaType.parseMediaType(fileEntity.getContentType()));
 

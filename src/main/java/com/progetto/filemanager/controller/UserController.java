@@ -1,8 +1,10 @@
 package com.progetto.filemanager.controller;
 
+import com.progetto.filemanager.dto.UserDto;
 import com.progetto.filemanager.entity.UserEntity;
 import com.progetto.filemanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,34 +27,36 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(
             @RequestParam("username") String username,
-            @RequestParam("password") String password,
-            @RequestParam("name") String name,
-            @RequestParam("lastname") String lastname,
-            @RequestParam("address") String address,
-            @RequestParam("phone") String phone,
-            @RequestParam("profilePic") MultipartFile profilePic) {
+            @RequestParam("password") String password) {
+
         if (userService.existsByUsername(username)) {
-            return ResponseEntity
-                    .badRequest()
-                    .body("Errore: l'utente con questo username è già presente.");
+            return ResponseEntity.badRequest().body("Errore: l'utente con questo username è già presente.");
         }
         try {
-            UserEntity newUser = userService.registerUser(username, password, name, lastname, address, phone, profilePic);
+            UserEntity newUser = userService.register(username, password);
             return ResponseEntity.ok(newUser);
-        } catch (IOException e) {
+        } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> loginUser(
-            @RequestParam("username") String username,
-            @RequestParam("password") String password) {
+//    @PostMapping("/login")
+//    public ResponseEntity<?> loginUser(@RequestParam("username") String username, @RequestParam("password") String password) {
+//        try {
+//            UserEntity user = userService.loginUser(username, password);
+//            return ResponseEntity.ok(user);
+//        } catch (RuntimeException e) {
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//    }
+    @PostMapping(value = "/login" , consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> loginUser(@RequestBody UserDto userDto) {
         try {
-            UserEntity user = userService.loginUser(username, password);
+            UserEntity user = userService.loginUser(userDto.getUsername(), userDto.getPassword());
             return ResponseEntity.ok(user);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
 }

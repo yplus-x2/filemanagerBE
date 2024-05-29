@@ -30,6 +30,7 @@ public class FileService {
 
 
     public List<FileEntity> findAll() {
+
         return fileRepository.findAll();
     }
 
@@ -62,6 +63,7 @@ public class FileService {
     }
 
     public Optional<FileEntity> getFileByUuid(String uuid) {
+
         return fileRepository.findByUuid(uuid);
     }
 

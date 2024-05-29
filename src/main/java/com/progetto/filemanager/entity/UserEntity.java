@@ -27,6 +27,9 @@ public class UserEntity implements Serializable {
     @Column(name = "uuid")
     private String uuid;
 
+    @Column(name = "tokenjwt")
+    private String tokenjwt;
+
     @Column(name = "username")
     private String username;
 

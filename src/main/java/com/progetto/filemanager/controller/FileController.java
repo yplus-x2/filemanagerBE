@@ -17,7 +17,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/file")
-@CrossOrigin(origins = "*", exposedHeaders = "Content-Disposition")
 
 public class FileController {
 

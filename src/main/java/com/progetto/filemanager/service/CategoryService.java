@@ -7,6 +7,7 @@ import com.progetto.filemanager.repository.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,6 +18,11 @@ public class CategoryService {
 
     @Autowired
     private FileRepository fileRepository;
+
+    public List<CategoryEntity> findAll() {
+
+        return categoryRepository.findAll();
+    }
 
     public CategoryEntity newCategory(String name) {
         Optional<CategoryEntity> existingEntity = categoryRepository.findByName(name);

@@ -49,6 +49,7 @@ public class UserController {
 //            return ResponseEntity.badRequest().body(e.getMessage());
 //        }
 //    }
+
     @PostMapping(value = "/login" , consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> loginUser(@RequestBody UserDto userDto) {
         try {

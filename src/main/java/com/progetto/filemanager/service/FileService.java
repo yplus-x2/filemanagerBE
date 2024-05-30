@@ -6,10 +6,7 @@ import com.progetto.filemanager.entity.FileEntity;
 import com.progetto.filemanager.repository.CategoryRepository;
 import com.progetto.filemanager.repository.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -87,5 +84,9 @@ public class FileService {
         fileEntityOptional.ifPresent(fileRepository::delete);
     }
 
+    public FileEntity getFileByUuidForView(String uuid) {
+        return fileRepository.findByUuid(uuid)
+                .orElseThrow(() -> new RuntimeException("File not found for UUID: " + uuid));
+    }
 
 }

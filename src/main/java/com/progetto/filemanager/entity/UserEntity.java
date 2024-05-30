@@ -43,4 +43,5 @@ public class UserEntity implements Serializable {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_userinfo", referencedColumnName = "id")
     private UserInfoEntity id_userinfo;
+
 }

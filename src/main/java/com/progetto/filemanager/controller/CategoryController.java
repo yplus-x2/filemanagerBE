@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.lang.model.util.Elements;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/category")
@@ -30,7 +31,8 @@ public class CategoryController {
     }
 
     @PostMapping("/newCategory")
-    public ResponseEntity<CategoryEntity> newCategory(@RequestParam String name) throws IOException {
+    public ResponseEntity<CategoryEntity> newCategory(@RequestBody Map<String, String> body) throws IOException {
+        String name = body.get("name");
         CategoryEntity categoryEntity = categoryService.newCategory(name);
         return new ResponseEntity<>(categoryEntity, HttpStatus.OK);
     }

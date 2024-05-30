@@ -17,6 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/file")
+@CrossOrigin(origins = "http://localhost:4200" , exposedHeaders = "Content-Disposition")
 
 public class FileController {
 

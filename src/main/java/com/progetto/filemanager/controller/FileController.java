@@ -86,6 +86,16 @@ public class FileController {
         }
     }
 
+    @GetMapping("/view/{uuid}")
+    public ResponseEntity<byte[]> viewFile(@PathVariable String uuid) {
+        FileEntity fileEntity = fileService.getFileByUuidForView(uuid);
+        BlobEntity blobEntity = fileEntity.getBlob();
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType(fileEntity.getContentType()));
+        headers.setContentLength(blobEntity.getContent().length);
+
+        return new ResponseEntity<>(blobEntity.getContent(), headers, HttpStatus.OK);
+    }
 
 }

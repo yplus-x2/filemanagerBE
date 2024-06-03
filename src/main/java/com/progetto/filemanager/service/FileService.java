@@ -3,8 +3,10 @@ package com.progetto.filemanager.service;
 import com.progetto.filemanager.entity.BlobEntity;
 import com.progetto.filemanager.entity.CategoryEntity;
 import com.progetto.filemanager.entity.FileEntity;
+import com.progetto.filemanager.entity.UserEntity;
 import com.progetto.filemanager.repository.CategoryRepository;
 import com.progetto.filemanager.repository.FileRepository;
+import com.progetto.filemanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,13 +27,20 @@ public class FileService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
 
     public List<FileEntity> findAll() {
 
         return fileRepository.findAll();
     }
 
-    public FileEntity uploadFile(MultipartFile file, String categoryName) throws IOException {
+    public List<FileEntity> findByUserId(Long id){
+        return fileRepository.findByUserEntityId(id);
+    }
+
+    public FileEntity uploadFile(MultipartFile file, String categoryName, Long userId) throws IOException {
 
         FileEntity fileEntity = new FileEntity();
         BlobEntity blobEntity = new BlobEntity();
@@ -43,12 +52,15 @@ public class FileService {
                     return categoryRepository.save(newCategory);
                 });
 
+        Optional<UserEntity> userEntity = userRepository.findById(userId);
+
         fileEntity.setCategory(category);
         blobEntity.setContent(file.getBytes());
         fileEntity.setBlob(blobEntity);
         fileEntity.setUuid(UUID.randomUUID().toString());
         fileEntity.setContentType(file.getContentType());
         fileEntity.setName(file.getOriginalFilename());
+        fileEntity.setUserEntity(userEntity.get());
 
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

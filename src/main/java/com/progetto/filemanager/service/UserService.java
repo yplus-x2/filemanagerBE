@@ -6,9 +6,8 @@ import com.progetto.filemanager.repository.UserRepository;
 import com.progetto.filemanager.repository.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -44,10 +43,14 @@ public class UserService {
 //    }
 
     public UserEntity register (String username, String pass){
+
+        UserInfoEntity userInfo = new UserInfoEntity();
+
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername(username);
         userEntity.setPassword(pass);
         userEntity.setUuid(UUID.randomUUID().toString());
+        userEntity.setId_userinfo(userInfo);
         return userRepository.save(userEntity);
     }
 
@@ -65,4 +68,15 @@ public class UserService {
         }
     }
 
+    public UserEntity findByName(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    public Optional<UserInfoEntity> getProfileImage(Long userId) {
+        return userInfoRepository.findById(userId);
+    }
+
+    public Optional<UserEntity> getUser (Long id){
+        return userRepository.findById(id);
+    }
 }

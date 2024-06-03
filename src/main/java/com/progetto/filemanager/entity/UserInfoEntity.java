@@ -35,8 +35,12 @@ public class UserInfoEntity implements Serializable {
     @Column(name = "phone")
     private String phone;
 
+    @Lob
     @Column(name = "profilepic")
     private byte[] profilepic;
+
+    @Column(name = "mimetype")
+    private String profilepicMimeType;
 
     @OneToOne(mappedBy = "id_userinfo")
     @JsonBackReference

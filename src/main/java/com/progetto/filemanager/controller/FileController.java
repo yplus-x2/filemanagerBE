@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -24,9 +25,18 @@ public class FileController {
     @Autowired
     private FileService fileService;
 
-    @PostMapping("/all")
-    public ResponseEntity<List<FileEntity>> getAllFiles() {
-        List<FileEntity> files = fileService.findAll();
+//    @PostMapping("/all")
+//    public ResponseEntity<List<FileEntity>> getAllFiles() {
+//        List<FileEntity> files = fileService.findAll();
+//        if(files.isEmpty()) {
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
+//        return new ResponseEntity<>(files, HttpStatus.OK);
+//    }
+
+    @GetMapping("/all/{id}")
+    public ResponseEntity<List<FileEntity>> getAllFiles(@PathVariable Long id){
+        List<FileEntity> files = fileService.findByUserId(id);
         if(files.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -35,8 +45,9 @@ public class FileController {
 
     @PostMapping("/upload")
     public FileEntity uploadFile(@RequestParam("file") MultipartFile file,
-                                 @RequestParam("categoryName") String categoryName) throws IOException {
-        return fileService.uploadFile(file, categoryName);
+                                 @RequestParam("categoryName") String categoryName,
+                                 @RequestParam("userId") Long userId) throws IOException {
+        return fileService.uploadFile(file, categoryName, userId);
     }
 
     @GetMapping("/download/{uuid}")

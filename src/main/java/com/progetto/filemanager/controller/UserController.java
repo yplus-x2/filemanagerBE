@@ -2,18 +2,18 @@ package com.progetto.filemanager.controller;
 
 import com.progetto.filemanager.dto.UserDto;
 import com.progetto.filemanager.entity.UserEntity;
+import com.progetto.filemanager.entity.UserInfoEntity;
 import com.progetto.filemanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
-@CrossOrigin(origins="http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200" , exposedHeaders = "Access-Control-Allow-Origin")
 
 public class UserController {
 
@@ -59,5 +59,28 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @GetMapping("/getUserId")
+    public UserEntity getUserId(@RequestParam String username) {
+        return userService.findByName(username);
+    }
+
+    @GetMapping("/userinfo/{id}")
+    public Optional<UserEntity> getUserInfo(@PathVariable Long id){
+        return userService.getUser(id);
+    }
+
+//    @GetMapping("/profile-image/{userId}")
+//    public ResponseEntity<byte[]> getProfileImage(@PathVariable Long userId) {
+//        Optional<UserInfoEntity> userOptional = userService.getProfileImage(userId);
+//        if (userOptional.isPresent()) {
+//            UserInfoEntity user = userOptional.get();
+//            return ResponseEntity.ok()
+//                    .contentType(MediaType.parseMediaType(user.getProfilepicMimeType()))
+//                    .body(user.getProfilepic());
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
 }
